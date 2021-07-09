@@ -7,7 +7,9 @@
             "email": "imithu@imithu.org"
         }
     ],
-    "require": {},
+    "require": {
+        "imithu/misc-php": "^1.1"
+    },
     "autoload": {
       "psr-4": {
           "RP\\": [
