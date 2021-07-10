@@ -42,6 +42,27 @@ class Reaction
 
 
   /**
+   * get reaction value
+   * 
+   * @param int    $id_user
+   * @param string $base_key
+   * @param int    $base_id
+   * 
+   * @return null|string NULL   - not found
+   *                     string - reaction value
+   * 
+   * @since   1.1.0
+   * @version 1.1.0
+   * @author  Mahmudul Hasan Mithu
+   */
+  public static function get_value( int $id_user, string $base_key, int $base_id ){
+    $value = DB::table('RP_reaction')->where('id_user', $id_user)->where('base_key', $base_key)->where('base_id', $base_id)->value('value');
+    if($value!==NULL) return htmlspecialchars_decode($value);
+    else return NULL;
+  }
+
+
+  /**
    * delete reaction
    * 
    * @param  int   $id
