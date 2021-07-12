@@ -23,7 +23,8 @@ class Comment
    * @version 1.0.0
    * @author  Mahmudul Hasan Mithu
    */
-  public static function add( string $base_key='comment', int $base_id, int $id_user=0, string $content_subject='', string $content_body='' ): int{
+  public static function add( string $base_key='comment', int $base_id, int $id_user=0, string $content_subject='', string $content_body='' ): int
+  {
     $base_key        = htmlspecialchars(trim($base_key));
     $content_subject = htmlspecialchars(trim($content_subject));
     $content_body    = htmlspecialchars(trim($content_body));
@@ -54,7 +55,8 @@ class Comment
    * @version 1.0.0
    * @author  Mahmudul Hasan Mithu
    */
-  public static function update(int $id, string $content_subject='', string $content_body=''): void{
+  public static function update(int $id, string $content_subject='', string $content_body=''): void
+  {
     $content_subject = htmlspecialchars(trim($content_subject));
     $content_body    = htmlspecialchars(trim($content_body));
 
@@ -68,19 +70,28 @@ class Comment
   /**
    * delete comment
    * 
-   * @param int    $id
+   * @param int $id
+   * @param int $id_user - if id_user>0 then check id_user condition
+   * 
    * @return void
    * 
    * @since   1.0.0
-   * @version 1.0.0
+   * @version 1.2.0
    * @author  Mahmudul Hasan Mithu
    */
-  public static function delete(int $id): void{
-    // delete 1st level comment
-    DB::table('RP_comment')->where('id', $id)->delete();
-
-    // delete 2nd level comment
-    DB::table('RP_comment')->where('base_key', 'comment')->where('base_id', $id)->delete();
+  public static function delete(int $id, int $id_user=0): void
+  {
+    if($id_user>0){
+      // delete 1st level comment
+      $success = DB::table('RP_comment')->where('id', $id)->where('id_user', $id_user)->delete();
+      // delete 2nd level comment
+      if($success) DB::table('RP_comment')->where('base_key', 'comment')->where('base_id', $id)->delete();
+    }elseif($id_user<1) {
+      // delete 1st level comment
+      DB::table('RP_comment')->where('id', $id)->delete();
+      // delete 2nd level comment
+      DB::table('RP_comment')->where('base_key', 'comment')->where('base_id', $id)->delete();
+    }
   }
 
 
