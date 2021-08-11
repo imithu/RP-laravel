@@ -1,3 +1,10 @@
+## [🔖 Version 1.3.0](https://github.com/imithu/RP-laravel/releases/tag/v1.3.0)
+### 🚩 Update
+- 🌱 update - id_user_to column has been added
+
+
+
+
 ## [🔖 Version 1.2.0](https://github.com/imithu/RP-laravel/releases/tag/v1.2.0) - 🇧🇩 UTC+6 2021-July-12 08:38:42
 ### 🚩 Update
 - 🌱 update - add id_user parameter in RP\Comment::delete method
