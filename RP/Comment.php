@@ -13,17 +13,18 @@ class Comment
    * 
    * @param string $base_key
    * @param int    $base_id
-   * @param int    $id_user
+   * @param int    $id_user_to
+   * @param int    $id_user_from
    * @param string $content_subject
    * @param string $content_body
    * 
    * @return int   $id
    * 
    * @since   1.0.0
-   * @version 1.0.0
+   * @version 1.3.0
    * @author  Mahmudul Hasan Mithu
    */
-  public static function add( string $base_key='comment', int $base_id, int $id_user=0, string $content_subject='', string $content_body='' ): int
+  public static function add( string $base_key='comment', int $base_id, int $id_user_to=0, int $id_user_from=0, string $content_subject='', string $content_body='' ): int
   {
     $base_key        = htmlspecialchars(trim($base_key));
     $content_subject = htmlspecialchars(trim($content_subject));
@@ -32,7 +33,8 @@ class Comment
     return DB::table('RP_comment')->insertGetId([
       'base_key'=> $base_key,
       'base_id' => $base_id,
-      'id_user' => $id_user,
+      'id_user_to' => $id_user_to,
+      'id_user_from' => $id_user_from,
       'content_subject' => $content_subject,
       'content_body' => $content_body,
       'edited' => 0,
@@ -76,14 +78,14 @@ class Comment
    * @return void
    * 
    * @since   1.0.0
-   * @version 1.2.0
+   * @version 1.3.0
    * @author  Mahmudul Hasan Mithu
    */
   public static function delete(int $id, int $id_user=0): void
   {
     if($id_user>0){
       // delete 1st level comment
-      $success = DB::table('RP_comment')->where('id', $id)->where('id_user', $id_user)->delete();
+      $success = DB::table('RP_comment')->where('id', $id)->where('id_user_from', $id_user)->delete();
       // delete 2nd level comment
       if($success) DB::table('RP_comment')->where('base_key', 'comment')->where('base_id', $id)->delete();
     }elseif($id_user<1) {
